@@ -1,0 +1,14 @@
+{
+  "name": "dsites",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Два сайти: «Волосожар» — живе небо над Україною, і «Мавка» — синтезатор, у який можна грати просто на сторінці.",
+  "type": "module",
+  "scripts": {
+    "start": "node serve.mjs",
+    "build:artifacts": "node scripts/build-artifacts.mjs --all"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

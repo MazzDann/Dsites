@@ -1,0 +1,299 @@
+<!doctype html>
+<html lang="uk">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Два сайти — Волосожар і Мавка</title>
+  <meta name="description" content="Волосожар — живе небо над Україною. Мавка — синтезатор, на якому можна грати просто на сторінці.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='32' height='64' fill='%230a0f2c'/%3E%3Crect x='32' width='32' height='64' fill='%23d6dbcc'/%3E%3Ccircle cx='16' cy='22' r='3' fill='%23f2b85c'/%3E%3Ccircle cx='22' cy='38' r='2' fill='%23e8eaf6'/%3E%3Ccircle cx='48' cy='32' r='9' fill='%2322402f'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Arsenal:wght@400;700&family=Piazzolla:ital,opsz,wght@1,8..30,400..500&family=Alegreya:ital@0;1&family=Tektur:wdth,wght@75..100,500..900&display=swap">
+  <style>
+    :root {
+      --night: #080c24;
+      --night-2: #111845;
+      --star: #e8eaf6;
+      --mist: #a3abcc;
+      --candle: #f2b85c;
+      --lichen: #d6dbcc;
+      --moss: #22402f;
+      --ink-2: #3d4c40;
+      --ember: #ffb23e;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      height: 100%;
+    }
+
+    body {
+      display: flex;
+      min-height: 100vh;
+      min-height: 100svh;
+      background: var(--night);
+      font-family: 'Arsenal', sans-serif;
+      overflow-x: hidden;
+    }
+
+    .door {
+      position: relative;
+      flex: 1 1 50%;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      min-width: 0;
+      padding: clamp(28px, 5vw, 72px);
+      text-decoration: none;
+      overflow: hidden;
+      transition: flex-grow 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+
+    .door:hover,
+    .door:focus-visible {
+      flex-grow: 1.35;
+    }
+
+    .door:focus-visible {
+      outline: 3px solid var(--candle);
+      outline-offset: -8px;
+    }
+
+    .sky {
+      background: radial-gradient(120% 90% at 30% 110%, #1b2555 0%, var(--night-2) 35%, var(--night) 75%);
+      color: var(--star);
+    }
+
+    .sky canvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    .forest {
+      background: var(--lichen);
+      color: var(--moss);
+    }
+
+    .door > * {
+      position: relative;
+    }
+
+    .sky h2 {
+      margin: 0;
+      font: italic 450 clamp(3rem, 1.5rem + 5.5vw, 6.5rem) / 0.95 'Piazzolla', serif;
+      letter-spacing: -0.02em;
+    }
+
+    .forest h2 {
+      margin: 0;
+      font: 850 clamp(3.4rem, 1.6rem + 7vw, 8rem) / 0.85 'Tektur', sans-serif;
+      font-stretch: 78%;
+      letter-spacing: -0.02em;
+    }
+
+    .door p {
+      max-width: 26rem;
+      margin: 18px 0 0;
+      font-size: 1.12rem;
+      line-height: 1.5;
+    }
+
+    .sky p {
+      color: var(--mist);
+    }
+
+    .forest p {
+      font-family: 'Alegreya', serif;
+      font-size: 1.2rem;
+      color: var(--ink-2);
+    }
+
+    .go {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 26px;
+      font-weight: 700;
+      font-size: 1rem;
+    }
+
+    .go i {
+      display: block;
+      width: 36px;
+      height: 1.5px;
+      background: currentColor;
+      transition: width 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+
+    .door:hover .go i {
+      width: 64px;
+    }
+
+    .sky .go {
+      color: var(--candle);
+    }
+
+    .forest .go {
+      font-family: 'Tektur', sans-serif;
+      font-stretch: 90%;
+    }
+
+    .wave {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 18%;
+      height: 140px;
+      opacity: 0.9;
+    }
+
+    .wave path {
+      fill: none;
+      stroke: var(--moss);
+      stroke-width: 2;
+      opacity: 0.18;
+    }
+
+    .wave .led {
+      fill: var(--ember);
+      filter: drop-shadow(0 0 6px rgba(255, 178, 62, 0.8));
+    }
+
+    .note {
+      position: fixed;
+      left: 50%;
+      bottom: 14px;
+      transform: translateX(-50%);
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: rgba(8, 12, 36, 0.7);
+      color: var(--mist);
+      font-size: 0.85rem;
+      white-space: nowrap;
+      pointer-events: none;
+      backdrop-filter: blur(6px);
+    }
+
+    h1 {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip: rect(0 0 0 0);
+    }
+
+    @media (max-width: 720px) {
+      body {
+        flex-direction: column;
+      }
+      .door {
+        min-height: 50svh;
+      }
+      .door:hover,
+      .door:focus-visible {
+        flex-grow: 1;
+      }
+      .note {
+        position: static;
+        transform: none;
+        align-self: center;
+        margin: 0;
+        border-radius: 0;
+        width: 100%;
+        text-align: center;
+        padding: 12px;
+        background: var(--night);
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .door,
+      .go i {
+        transition: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>Два сайти</h1>
+
+  <a class="door sky" href="volosozhar/">
+    <canvas id="stars" aria-hidden="true"></canvas>
+    <h2>Волосожар</h2>
+    <p>Живе небо над вашим містом: зорі, планети, Місяць і народні назви сузір'їв. Що видно цієї ночі і коли дивитися на зорепади.</p>
+    <span class="go">Подивитися на небо <i aria-hidden="true"></i></span>
+  </a>
+
+  <a class="door forest" href="mavka/">
+    <svg class="wave" viewBox="0 0 600 140" preserveAspectRatio="none" aria-hidden="true">
+      <path d="M0 70 C 50 10, 100 10, 150 70 S 250 130, 300 70 S 400 10, 450 70 S 550 130, 600 70" />
+      <path d="M0 70 C 25 30, 50 30, 75 70 S 125 110, 150 70 S 200 30, 225 70 S 275 110, 300 70 S 350 30, 375 70 S 425 110, 450 70 S 500 30, 525 70 S 575 110, 600 70" />
+      <circle class="led" cx="560" cy="18" r="5" />
+    </svg>
+    <h2>Мавка</h2>
+    <p>Синтезатор, названий на честь героїні «Лісової пісні». Вісім голосів, секвенсор і запис — грати можна просто на сторінці.</p>
+    <span class="go">Зіграти <i aria-hidden="true"></i></span>
+  </a>
+
+  <p class="note">Версія 1.0.0</p>
+
+  <script>
+    (function () {
+      const c = document.getElementById('stars');
+      const ctx = c.getContext('2d');
+      let seed = 11;
+      const rnd = () => ((seed = (seed * 16807) % 2147483647) / 2147483647);
+      function draw() {
+        const r = c.getBoundingClientRect();
+        const dpr = Math.min(window.devicePixelRatio || 1, 2);
+        c.width = r.width * dpr;
+        c.height = r.height * dpr;
+        seed = 11;
+        const n = Math.round((r.width * r.height) / 2600);
+        for (let i = 0; i < n; i++) {
+          const x = rnd() * c.width;
+          const y = rnd() * c.height;
+          const m = Math.pow(rnd(), 3);
+          // лишаємо чисте небо під текстом
+          if (y > c.height * 0.5 && x < c.width * 0.8) continue;
+          const rad = (0.4 + m * 1.8) * dpr;
+          ctx.globalAlpha = 0.25 + m * 0.75;
+          ctx.fillStyle = rnd() < 0.15 ? '#ffd9a8' : '#e8eaf6';
+          ctx.beginPath();
+          ctx.arc(x, y, rad, 0, Math.PI * 2);
+          ctx.fill();
+        }
+        // Волосожар — тісна купка зір
+        const cx = c.width * 0.72;
+        const cy = c.height * 0.26;
+        const s = Math.min(c.width, c.height) * 0.06;
+        const pts = [[0, 0], [0.9, -0.1], [-0.8, 0.05], [-0.3, 0.55], [0.2, -0.7], [-0.9, -0.45], [0.95, 0.5]];
+        ctx.globalAlpha = 1;
+        for (const [px, py] of pts) {
+          const g = ctx.createRadialGradient(cx + px * s, cy + py * s, 0, cx + px * s, cy + py * s, 7 * dpr);
+          g.addColorStop(0, 'rgba(255, 244, 220, 1)');
+          g.addColorStop(0.3, 'rgba(242, 184, 92, 0.6)');
+          g.addColorStop(1, 'rgba(242, 184, 92, 0)');
+          ctx.fillStyle = g;
+          ctx.beginPath();
+          ctx.arc(cx + px * s, cy + py * s, 7 * dpr, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      }
+      draw();
+      let t = 0;
+      window.addEventListener('resize', () => {
+        clearTimeout(t);
+        t = setTimeout(draw, 100);
+      });
+    })();
+  </script>
+</body>
+</html>

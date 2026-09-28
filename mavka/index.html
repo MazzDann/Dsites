@@ -1,0 +1,284 @@
+<!doctype html>
+<html lang="uk">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Мавка — синтезатор, що звучить як ліс</title>
+  <meta name="description" content="Концепт настільного синтезатора від майстерні «Верба». Грайте просто на сторінці: вісім голосів, названих на честь героїв «Лісової пісні», секвенсор і запис звуку.">
+  <meta name="theme-color" content="#d6dbcc">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2322402f'/%3E%3Ccircle cx='32' cy='34' r='15' fill='%23eee9da'/%3E%3Cpath d='M32 34 L32 21' stroke='%2322402f' stroke-width='4' stroke-linecap='round'/%3E%3Ccircle cx='50' cy='14' r='4' fill='%23ffb23e'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@0,400..700;1,400..700&family=Handjet:wght@300..600&family=Tektur:wdth,wght@75..100,400..900&display=swap">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <a class="skip" href="#flow">Перейти до тексту</a>
+
+  <header class="top">
+    <a class="brand" href="#top">
+      <span class="brand-name">Верба</span>
+      <span class="brand-note">майстерня звуку</span>
+    </a>
+    <nav class="nav" aria-label="Розділи">
+      <a href="#flow">Звук</a>
+      <a href="#cast">Голоси</a>
+      <a href="#seq">Мелодія</a>
+      <a href="#build">Будова</a>
+    </nav>
+    <a class="cta" href="#queue">Стати в чергу</a>
+  </header>
+
+  <main>
+    <section class="hero" id="top" aria-labelledby="hero-title">
+      <div class="hero-head">
+        <h1 class="word" id="hero-title" aria-label="Мавка"><span aria-hidden="true">М</span><span aria-hidden="true">а</span><span aria-hidden="true">в</span><span aria-hidden="true">к</span><span aria-hidden="true">а</span></h1>
+        <p class="hero-sub">Настільний синтезатор з ясена й алюмінію. Звучить як ліс після дощу — і грати на ньому можна просто тут, на сторінці.</p>
+      </div>
+
+      <div class="instrument" id="instrument">
+        <div class="cheek cheek-l" aria-hidden="true"></div>
+        <div class="panel">
+          <span class="screw s1" aria-hidden="true"></span>
+          <span class="screw s2" aria-hidden="true"></span>
+          <span class="screw s3" aria-hidden="true"></span>
+          <span class="screw s4" aria-hidden="true"></span>
+
+          <div class="row row-top">
+            <div class="display">
+              <div class="screen">
+                <canvas id="scope" aria-hidden="true"></canvas>
+                <div class="screen-text">
+                  <span class="screen-main" id="screen-main" aria-live="polite">01 мавка</span>
+                  <span class="screen-sub" id="screen-sub">натисніть будь-яку клавішу</span>
+                </div>
+              </div>
+              <div class="deck">
+                <div class="deck-group">
+                  <button class="power" id="power" type="button" role="switch" aria-checked="false" aria-label="Живлення">
+                    <span class="lever" aria-hidden="true"></span>
+                    <span class="led" aria-hidden="true"></span>
+                  </button>
+                  <span class="deck-label">живлення</span>
+                </div>
+                <div class="deck-group">
+                  <div class="pair">
+                    <button class="hw" id="preset-prev" type="button" aria-label="Попередній голос"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M10 3L5 8l5 5"/></svg></button>
+                    <button class="hw" id="preset-next" type="button" aria-label="Наступний голос"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M6 3l5 5-5 5"/></svg></button>
+                  </div>
+                  <span class="deck-label">голос</span>
+                </div>
+                <div class="deck-group">
+                  <div class="pair">
+                    <button class="hw" id="oct-down" type="button" aria-label="Октава нижче"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10"/></svg></button>
+                    <button class="hw" id="oct-up" type="button" aria-label="Октава вище"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10M8 3v10"/></svg></button>
+                  </div>
+                  <span class="deck-label">октава</span>
+                </div>
+                <div class="deck-group">
+                  <button class="hw rec" id="record" type="button" aria-pressed="false" aria-label="Запис"><span class="led red" aria-hidden="true"></span></button>
+                  <span class="deck-label">запис</span>
+                </div>
+                <div class="deck-group">
+                  <button class="hw" id="share" type="button" aria-label="Скопіювати посилання на цей звук"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M6.5 9.5l3-3M7 4.5l1.2-1.2a2.6 2.6 0 0 1 3.7 3.7L10.7 8.2M9 11.5l-1.2 1.2a2.6 2.6 0 0 1-3.7-3.7l1.2-1.2"/></svg></button>
+                  <span class="deck-label">посилання</span>
+                </div>
+                <div class="deck-group">
+                  <button class="hw" id="midi" type="button" aria-pressed="false" aria-label="Під'єднати MIDI-клавіатуру"><svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="6"/><circle cx="5" cy="7" r=".6"/><circle cx="8" cy="5.2" r=".6"/><circle cx="11" cy="7" r=".6"/><circle cx="6" cy="10" r=".6"/><circle cx="10" cy="10" r=".6"/></svg></button>
+                  <span class="deck-label">midi</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="module" data-module="osc" role="group" aria-label="генератори">
+              <span class="silk" aria-hidden="true">генератори</span>
+              <div class="controls"></div>
+            </div>
+            <div class="module" data-module="filter" role="group" aria-label="фільтр">
+              <span class="silk" aria-hidden="true">фільтр</span>
+              <div class="controls"></div>
+            </div>
+          </div>
+
+          <div class="row row-bottom">
+            <div class="module" data-module="env" role="group" aria-label="обвідна">
+              <span class="silk" aria-hidden="true">обвідна</span>
+              <div class="controls"></div>
+            </div>
+            <div class="module" data-module="lfo" role="group" aria-label="рух">
+              <span class="silk" aria-hidden="true">рух</span>
+              <div class="controls"></div>
+            </div>
+            <div class="module" data-module="space" role="group" aria-label="простір">
+              <span class="silk" aria-hidden="true">простір</span>
+              <div class="controls"></div>
+            </div>
+            <div class="module" data-module="out" role="group" aria-label="вихід">
+              <span class="silk" aria-hidden="true">вихід</span>
+              <div class="controls"></div>
+            </div>
+          </div>
+
+          <div class="keybed">
+            <div class="keys" id="keys" aria-label="Клавіатура"></div>
+          </div>
+          <p class="panel-mark" aria-hidden="true"><span>мавка</span> верба, київ</p>
+        </div>
+        <div class="cheek cheek-r" aria-hidden="true"></div>
+      </div>
+
+      <p class="play-hint touch-hint">
+        Торкайтеся клавіш, щоб грати, — можна кількома пальцями. Ручки крутяться пальцем угору-вниз, подвійний дотик повертає початкове значення.
+      </p>
+      <p class="play-hint key-hint">
+        Грайте клавішами <kbd>A</kbd> <kbd>S</kbd> <kbd>D</kbd> <kbd>F</kbd>… — чорні ноти на <kbd>W</kbd> <kbd>E</kbd> <kbd>T</kbd> <kbd>Y</kbd> <kbd>U</kbd>, октава на <kbd>Z</kbd> і <kbd>X</kbd>.
+        Ручки крутяться мишею вгору-вниз, колесом або стрілками; подвійний клік повертає початкове значення.
+      </p>
+      <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    </section>
+
+    <section class="flow" id="flow" aria-labelledby="flow-title">
+      <div class="wrap">
+        <h2 id="flow-title">Шлях звуку</h2>
+        <p class="lead">Кожна нота в Мавці проходить чотири зупинки. Покрутіть ручки на панелі — і схеми нижче зміняться разом зі звуком.</p>
+        <ol class="stages">
+          <li>
+            <div class="glass"><canvas data-flow="osc" aria-hidden="true"></canvas></div>
+            <h3>Генератори</h3>
+            <p>Дві хвилі й шум — сирий, яскравий звук. Форма хвилі задає характер: синус м'який, пилка дзвінка, меандр порожнистий, як дерев'яна дудка.</p>
+          </li>
+          <li>
+            <div class="glass"><canvas data-flow="filter" aria-hidden="true"></canvas></div>
+            <h3>Фільтр</h3>
+            <p>Зрізає високі частоти. Відкритий фільтр звучить яскраво, закритий — глухо, наче крізь листя. Резонанс додає свисту на межі зрізу.</p>
+          </li>
+          <li>
+            <div class="glass"><canvas data-flow="env" aria-hidden="true"></canvas></div>
+            <h3>Обвідна</h3>
+            <p>Визначає, як нота народжується і згасає: різкий удар чи повільний схід, коротке «тук» чи довгий видих.</p>
+          </li>
+          <li>
+            <div class="glass"><canvas data-flow="space" aria-hidden="true"></canvas></div>
+            <h3>Простір</h3>
+            <p>Відлуння перекидає ноту між лівим і правим каналом, а «ліс» — реверберація — ставить її серед дерев, далеко від стін кімнати.</p>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="cast" id="cast" aria-labelledby="cast-title">
+      <div class="wrap narrow">
+        <h2 id="cast-title">Дійові особи</h2>
+        <p class="lead">Вісім голосів Мавки названі на честь героїв «Лісової пісні» Лесі Українки. Кожен — окреме налаштування всіх ручок на панелі.</p>
+        <ol class="cast-list" id="cast-list"></ol>
+        <figure class="quote">
+          <blockquote><p>Я в серці маю те, що не вмирає.</p></blockquote>
+          <figcaption>Мавка, «Лісова пісня», 1911</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="seq" id="seq" aria-labelledby="seq-title">
+      <div class="wrap">
+        <h2 id="seq-title">Складіть мелодію</h2>
+        <p class="lead">Шістнадцять кроків і п'ять нот ля-мінорної пентатоніки — ладу, на якому тримаються сотні народних пісень. Тут неможливо схибити: будь-яка комбінація звучить.</p>
+        <div class="seq-panel">
+          <div class="seq-controls">
+            <button class="seq-play" id="seq-play" type="button" aria-pressed="false">
+              <svg class="i-play" viewBox="0 0 16 16" aria-hidden="true"><path d="M4 2.5l9 5.5-9 5.5z"/></svg>
+              <svg class="i-stop" viewBox="0 0 16 16" aria-hidden="true"><rect x="3.5" y="3.5" width="9" height="9" rx="1"/></svg>
+              <span class="t">Грати</span>
+            </button>
+            <label class="tempo">
+              <span>Темп</span>
+              <input id="seq-tempo" type="range" min="60" max="160" value="96" step="1" aria-describedby="seq-tempo-out">
+              <output id="seq-tempo-out" for="seq-tempo">96 уд/хв</output>
+            </label>
+            <button class="seq-btn" id="seq-random" type="button">Випадкова мелодія</button>
+            <button class="seq-btn" id="seq-clear" type="button">Очистити</button>
+            <p class="seq-voice">Голос: <b id="seq-voice">Мавка</b></p>
+          </div>
+          <div class="seq-grid" id="seq-grid" role="grid" aria-label="Кроки мелодії"></div>
+        </div>
+        <p class="hint">Голос змінюється стрілками «голос» на панелі або кнопками «Послухати» вище. Мелодія зберігається у вашому браузері.</p>
+      </div>
+    </section>
+
+    <section class="build" id="build" aria-labelledby="build-title">
+      <div class="wrap">
+        <h2 id="build-title">Будова</h2>
+        <div class="build-grid">
+          <div class="build-text">
+            <p>Щічки — з українського ясена, панель — алюміній, покритий глибокою зеленою емаллю, ручки — з бакелітоподібного композиту, приємного на дотик. Усередині — та сама схема, що звучить на цій сторінці: два генератори, фільтр і простір.</p>
+            <p>Мавка задумана як інструмент, який не хочеться ховати в шафу. Її можна поставити на стіл поруч із книжками, під'єднати до навушників і грати, доки закипає чайник.</p>
+            <p class="concept">Це концепт. Справжньої Мавки поки не існує, зате звук на сторінці — справжній: його синтезує ваш браузер у реальному часі.</p>
+          </div>
+          <dl class="specs">
+            <div><dt>Голоси</dt><dd>8 одночасно або 1 з ковзанням</dd></div>
+            <div><dt>Генератори</dt><dd>2 на голос і шум, 4 форми хвилі</dd></div>
+            <div><dt>Фільтр</dt><dd>низькочастотний, 24 дБ/окт, резонанс</dd></div>
+            <div><dt>Обвідна</dt><dd>атака, спад, рівень, згасання</dd></div>
+            <div><dt>Рух</dt><dd>на тон, фільтр або гучність</dd></div>
+            <div><dt>Простір</dt><dd>стереовідлуння і реверберація «ліс»</dd></div>
+            <div><dt>Клавіатура</dt><dd>25 клавіш із чутливістю до натиску</dd></div>
+            <div><dt>Роз'єми</dt><dd>USB-C, MIDI, 2 лінійні виходи, навушники</dd></div>
+            <div><dt>Розмір і вага</dt><dd>52 × 26 × 8 см, 4,2 кг</dd></div>
+            <div><dt>Орієнтовна ціна</dt><dd>18 900 ₴</dd></div>
+          </dl>
+        </div>
+      </div>
+    </section>
+
+    <section class="queue" id="queue" aria-labelledby="queue-title">
+      <div class="wrap narrow">
+        <h2 id="queue-title">Перша партія — 120 інструментів</h2>
+        <p class="lead">Залиште контакт, і ми напишемо, коли почнемо збирати перші Мавки.</p>
+        <form class="queue-form" id="queue-form" novalidate>
+          <div class="field">
+            <label for="name">Як до вас звертатися</label>
+            <input id="name" name="name" type="text" autocomplete="given-name" required aria-describedby="name-err">
+            <p class="err" id="name-err" aria-live="polite"></p>
+          </div>
+          <div class="field">
+            <label for="email">Пошта</label>
+            <input id="email" name="email" type="email" autocomplete="email" inputmode="email" required aria-describedby="email-err">
+            <p class="err" id="email-err" aria-live="polite"></p>
+          </div>
+          <div class="field">
+            <label for="city">Місто <span class="opt">необов'язково</span></label>
+            <input id="city" name="city" type="text" autocomplete="address-level2">
+          </div>
+          <fieldset class="field uses">
+            <legend>Де збираєтеся грати</legend>
+            <label><input type="radio" name="use" value="home" checked><span>Вдома, для себе</span></label>
+            <label><input type="radio" name="use" value="stage"><span>На сцені</span></label>
+            <label><input type="radio" name="use" value="studio"><span>У студії</span></label>
+            <label><input type="radio" name="use" value="unsure"><span>Ще не знаю</span></label>
+          </fieldset>
+          <button class="submit" type="submit">Стати в чергу</button>
+          <p class="form-note">Демо-форма: дані нікуди не надсилаються і лишаються тільки у вашому браузері.</p>
+        </form>
+        <div class="queue-done" id="queue-done" tabindex="-1" hidden>
+          <p class="done-title">Готово, <span id="queue-name"></span>.</p>
+          <p>Це концепт-сайт, тож лист не прийде, — але якщо Мавку колись зберуть, ви знаєте, де стояти в черзі.</p>
+          <button class="seq-btn light" id="queue-again" type="button">Заповнити ще раз</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <div class="wrap">
+      <p class="foot-brand">Верба</p>
+      <p>Концепт майстерні звуку. Кожна нота на цій сторінці синтезується наживо через Web Audio — жодних записаних семплів.</p>
+      <p>Голоси названі на честь героїв драми-феєрії Лесі Українки «Лісова пісня» (1911). Шрифти Tektur, Alegreya і Handjet.</p>
+      <p class="foot-meta">Версія 1.0.0 <a href="../">До всіх проєктів</a></p>
+    </div>
+  </footer>
+
+  <script src="js/engine.js"></script>
+  <script src="js/presets.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/page.js"></script>
+</body>
+</html>
